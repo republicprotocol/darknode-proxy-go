@@ -8,15 +8,20 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
+	port := os.Getenv("PORT")
+
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/status/{ip4}", handleStatus).Methods("GET")
+	http.Handle("/", cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+	}).Handler(r))
 
-	http.Handle("/", r)
-
-	port := os.Getenv("PORT")
 	log.Printf("listening on port %v...", port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%v", port), nil); err != nil {
 		log.Fatalf("cannot listen on port %v: %v", port, err)
