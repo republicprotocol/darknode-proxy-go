@@ -1,1 +1,8 @@
+# Profiling
+*.out
+
+# Tests
+*.test
+
+# Dep
 vendor
