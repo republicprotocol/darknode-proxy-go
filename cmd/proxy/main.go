@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,10 +14,24 @@ import (
 )
 
 func main() {
+	// Load environment variables.
 	port := os.Getenv("PORT")
+	network := os.Getenv("NETWORK")
+	if network == "" {
+		log.Fatalf("cannot read network environment")
+	}
+
+	// Load configuration file based on specified network environment.
+	config, err := loadConfig(fmt.Sprintf("env/%v/config.json", network))
+	if err != nil {
+		log.Fatalf("cannot load config: %v", err)
+	}
 
 	r := mux.NewRouter().StrictSlash(true)
-	r.HandleFunc("/status/{ip4}", handleStatus).Methods("GET")
+	r.HandleFunc("/status/{ip4}", func(w http.ResponseWriter, r *http.Request) {
+		serveTemplate(w, r, config)
+	})
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./modules/darknode-ui-ts/build/")))
 	http.Handle("/", cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
@@ -28,8 +44,18 @@ func main() {
 	}
 }
 
-func handleStatus(w http.ResponseWriter, r *http.Request) {
+func loadConfig(configFile string) (interface{}, error) {
+	file, err := ioutil.ReadFile(configFile)
+	if err != nil {
+		return nil, err
+	}
+	var data interface{}
+	json.Unmarshal(file, &data)
+	return data, nil
+}
 
+func serveTemplate(w http.ResponseWriter, r *http.Request, config interface{}) {
+	// TODO: Improve error messages
 	ip4, ok := mux.Vars(r)["ip4"]
 	if !ok {
 		w.WriteHeader(400)
@@ -45,13 +71,46 @@ func handleStatus(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	data, err := ioutil.ReadAll(res.Body)
+	darknodeData, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		w.WriteHeader(500)
 		w.Write([]byte("cannot read response: " + err.Error()))
 		return
 	}
 
-	w.Header()["Content-Type"] = []string{"application/json"}
-	w.Write(data)
+	networkData, err := json.Marshal(config)
+	if err != nil {
+		w.WriteHeader(500)
+		w.Write([]byte("cannot marshal network data: " + err.Error()))
+		return
+	}
+
+	// Create template file and insert environment variables.
+	file, err := os.Create("modules/darknode-ui-ts/build/template.html")
+	if err != nil {
+		w.WriteHeader(500)
+		w.Write([]byte(fmt.Sprintf("cannot create template file: %v", err)))
+		return
+	}
+	defer file.Close()
+
+	tmpl, err := template.ParseFiles("modules/darknode-ui-ts/build/index.html")
+	if err != nil {
+		w.WriteHeader(500)
+		w.Write([]byte(fmt.Sprintf("cannot parse layout template: %v", err)))
+		return
+	}
+
+	// TODO: Add validation for darknodeData and networkData (non-empty, etc.)
+	if tmpl, err = tmpl.Parse(`{{define "env"}}<script type="text/javascript">window.DARKNODE=` + string(darknodeData) + `; window.NETWORK=` + string(networkData) + `;</script>{{end}}`); err != nil {
+		w.WriteHeader(500)
+		w.Write([]byte(fmt.Sprintf("cannot execute template: %v", err)))
+		return
+	}
+
+	if err := tmpl.ExecuteTemplate(w, "layout", nil); err != nil {
+		w.WriteHeader(500)
+		w.Write([]byte(fmt.Sprintf("cannot execute template: %v", err)))
+		return
+	}
 }
