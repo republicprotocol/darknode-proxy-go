@@ -1,6 +1,0 @@
-[submodule "modules/darknode-ui-ts"]
-	path = modules/darknode-ui-ts
-	url = https://github.com/republicprotocol/darknode-ui-ts.git
-[submodule "modules/darknode-cli"]
-	path = modules/darknode-cli
-	url = https://github.com/republicprotocol/darknode-cli.git
