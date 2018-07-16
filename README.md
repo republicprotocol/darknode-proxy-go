@@ -5,7 +5,7 @@ This is a tool used for generating and serving the Darknode Operator Dashboard a
 First clone the repository and initialize the submodules by running:
 
     $ git clone [url]
-    $ cd darknode-ui-go
+    $ cd darknode-proxy-go
     $ git submodule update --init
 
 To generate the files for the UI and CLI, run:
