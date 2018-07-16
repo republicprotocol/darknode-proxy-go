@@ -31,7 +31,7 @@ func main() {
 	r.HandleFunc("/status/{ip4}", func(w http.ResponseWriter, r *http.Request) {
 		serveTemplate(w, r, config)
 	})
-	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./modules/darknode-ui-ts/build/")))
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./public")))
 	http.Handle("/", cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
@@ -86,7 +86,7 @@ func serveTemplate(w http.ResponseWriter, r *http.Request, config interface{}) {
 	}
 
 	// Create template file and insert environment variables.
-	tmpl, err := template.ParseFiles("modules/darknode-ui-ts/build/index.html")
+	tmpl, err := template.ParseFiles("./public/ui/index.html")
 	if err != nil {
 		w.WriteHeader(500)
 		w.Write([]byte(fmt.Sprintf("cannot parse layout template: %v", err)))
