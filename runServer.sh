@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd darknode-ui-ts
-git checkout master
+cd modules/darknode-ui-ts
+git checkout develop
 git pull
 npm run build
-cd ..
-go run cmd/proxy/main.go
+cd ../..
+go run cmd/web/web.go

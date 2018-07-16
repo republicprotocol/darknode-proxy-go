@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -86,20 +85,11 @@ func serveTemplate(w http.ResponseWriter, r *http.Request, config interface{}) {
 	}
 
 	// Create template file and insert environment variables.
-	file, err := os.Create("modules/darknode-ui-ts/build/template.html")
-	if err != nil {
-		w.WriteHeader(500)
-		w.Write([]byte(fmt.Sprintf("cannot create template file: %v", err)))
-		return
-	}
-	defer file.Close()
-
 	tmpl, err := template.ParseFiles("modules/darknode-ui-ts/build/index.html")
 	if err != nil {
 		w.WriteHeader(500)
 		w.Write([]byte(fmt.Sprintf("cannot parse layout template: %v", err)))
 		return
-	}
 
 	// TODO: Add validation for darknodeData and networkData (non-empty, etc.)
 	if tmpl, err = tmpl.Parse(`{{define "env"}}<script type="text/javascript">window.DARKNODE=` + string(darknodeData) + `; window.NETWORK=` + string(networkData) + `;</script>{{end}}`); err != nil {
