@@ -1,6 +1,6 @@
 {
     "network": "testnet",
-    "infura": "https://kovan.infura.io/",
+    "infura": "https://kovan.infura.io",
     "ethNetwork": "kovan",
     "ethNetworkLabel": "Kovan",
     "ledgerNetworkId": "42",

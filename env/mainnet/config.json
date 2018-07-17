@@ -1,6 +1,6 @@
 {
     "network": "mainnet",
-    "infura": "https://mainnet.infura.io/",
+    "infura": "https://mainnet.infura.io",
     "ethNetwork": "mainnet",
     "ethNetworkLabel": "Mainnet",
     "ledgerNetworkId": "1",
