@@ -55,7 +55,6 @@ func loadConfig(configFile string) (interface{}, error) {
 }
 
 func serveTemplate(w http.ResponseWriter, r *http.Request, config interface{}) {
-	// TODO: Improve error messages
 	ip4, ok := mux.Vars(r)["ip4"]
 	if !ok {
 		w.WriteHeader(400)
@@ -93,10 +92,15 @@ func serveTemplate(w http.ResponseWriter, r *http.Request, config interface{}) {
 		return
 	}
 
-	// TODO: Add validation for darknodeData and networkData (non-empty, etc.)
+	if len(darknodeData) == 0 || len(networkData) == 0 {
+		w.WriteHeader(500)
+		w.Write([]byte("invalid data received"))
+		return
+	}
+
 	if tmpl, err = tmpl.Parse(`{{define "env"}}<script type="text/javascript">window.DARKNODE=` + string(darknodeData) + `; window.NETWORK=` + string(networkData) + `;</script>{{end}}`); err != nil {
 		w.WriteHeader(500)
-		w.Write([]byte(fmt.Sprintf("cannot execute template: %v", err)))
+		w.Write([]byte(fmt.Sprintf("cannot parse env template: %v", err)))
 		return
 	}
 

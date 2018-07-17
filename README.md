@@ -1,6 +1,6 @@
 # Darknode UI and CLI
 
-This is a tool used for generating and serving the Darknode Operator Dashboard and CLI files.
+This is an internal tool used for generating and serving the Darknode Operator Dashboard and CLI files.
 
 To generate the files for the UI and CLI, run:
 
