@@ -3,7 +3,7 @@
     "infura": "https://kovan.infura.io",
     "ethNetwork": "kovan",
     "ethNetworkLabel": "Kovan",
-    "ledgerNetworkId": "42",
+    "ledgerNetworkId": 42,
     "contracts": {
         "darknodeRegistry": "0x7352e7244899b7cb5d803cc02741c8910d3b75de",
         "orderbook": "0x20949251119d77471a40f456a8a9d39b1847db8d",
