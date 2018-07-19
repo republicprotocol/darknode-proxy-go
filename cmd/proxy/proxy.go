@@ -16,20 +16,10 @@ import (
 func main() {
 	// Load environment variables.
 	port := os.Getenv("PORT")
-	network := os.Getenv("NETWORK")
-	if network == "" {
-		log.Fatalf("cannot read network environment")
-	}
-
-	// Load configuration file based on specified network environment.
-	config, err := loadConfig(fmt.Sprintf("env/%v/config.json", network))
-	if err != nil {
-		log.Fatalf("cannot load config: %v", err)
-	}
 
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/status/{ip4}", func(w http.ResponseWriter, r *http.Request) {
-		serveTemplate(w, r, config)
+		serveTemplate(w, r)
 	})
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./public")))
 	http.Handle("/", cors.New(cors.Options{
@@ -54,7 +44,7 @@ func loadConfig(configFile string) (interface{}, error) {
 	return data, nil
 }
 
-func serveTemplate(w http.ResponseWriter, r *http.Request, config interface{}) {
+func serveTemplate(w http.ResponseWriter, r *http.Request) {
 	ip4, ok := mux.Vars(r)["ip4"]
 	if !ok {
 		w.WriteHeader(400)
@@ -77,13 +67,6 @@ func serveTemplate(w http.ResponseWriter, r *http.Request, config interface{}) {
 		return
 	}
 
-	networkData, err := json.Marshal(config)
-	if err != nil {
-		w.WriteHeader(500)
-		w.Write([]byte("cannot marshal network data: " + err.Error()))
-		return
-	}
-
 	// Create template file and insert environment variables.
 	tmpl, err := template.ParseFiles("./public/ui/index.html")
 	if err != nil {
@@ -92,13 +75,13 @@ func serveTemplate(w http.ResponseWriter, r *http.Request, config interface{}) {
 		return
 	}
 
-	if len(darknodeData) == 0 || len(networkData) == 0 {
+	if len(darknodeData) == 0 {
 		w.WriteHeader(500)
 		w.Write([]byte("invalid data received"))
 		return
 	}
 
-	if tmpl, err = tmpl.Parse(`{{define "env"}}<script type="text/javascript">window.DARKNODE=` + string(darknodeData) + `; window.NETWORK=` + string(networkData) + `;</script>{{end}}`); err != nil {
+	if tmpl, err = tmpl.Parse(`{{define "env"}}<script type="text/javascript">window.DARKNODE=` + string(darknodeData) + `;</script>{{end}}`); err != nil {
 		w.WriteHeader(500)
 		w.Write([]byte(fmt.Sprintf("cannot parse env template: %v", err)))
 		return

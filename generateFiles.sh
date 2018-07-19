@@ -26,7 +26,7 @@ mv build "../../public/$UI_FOLDER"
 cd ../..
 
 # Build CLI
-cd "$MODULES_FOLDER/darknode-cli"
+cd "$MODULES_FOLDER/darknode-cli/scripts"
 bash generate.sh
-mv -v build/* ../../public
-cd ../..
+mv -v build/* ../../../public
+cd ../../..
