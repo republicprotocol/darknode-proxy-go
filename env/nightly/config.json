@@ -1,14 +1,7 @@
 {
-    "network": "nightly",
     "infura": "https://kovan.infura.io",
     "ethNetwork": "kovan",
     "ethNetworkLabel": "Kovan",
-    "ledgerNetworkId": 42,
-    "contracts": {
-        "darknodeRegistry": "0xb3972e45d16b0942ed34943fdde413190cf5b12a",
-        "orderbook": "0x8356e57aa32547685149a859293ad83c144b800c",
-        "rewardVault": "0x7214c4584ab01e61355244e2325ab3f40aca4d85"
-    },
     "tokens": {
         "DGX": "0x092ece29781777604afac04887af30042c3bc5df",
         "REN": "0x15f692d6b9ba8cec643c7d16909e8acdec431bf6",

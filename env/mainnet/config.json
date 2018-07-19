@@ -1,14 +1,7 @@
 {
-    "network": "mainnet",
     "infura": "https://mainnet.infura.io",
     "ethNetwork": "mainnet",
     "ethNetworkLabel": "Mainnet",
-    "ledgerNetworkId": 1,
-    "contracts": {
-        "darknodeRegistry": "",
-        "orderbook": "",
-        "rewardVault": ""
-    },
     "tokens": {
         "DGX": "",
         "REN": "",
