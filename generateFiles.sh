@@ -30,5 +30,5 @@ cd ../..
 # Build CLI
 cd $MODULES_FOLDER/darknode-cli
 bash scripts/generate.sh
-mv -v build/* ../../../public
+mv -v build/* ../../public
 cd ../..

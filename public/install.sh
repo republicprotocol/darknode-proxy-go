@@ -43,6 +43,7 @@ unzip terraform
 chmod +x terraform
 mv terraform bin/terraform
 
+
 # clean up zip files
 rm darknode.zip
 rm terraform.zip
@@ -67,8 +68,12 @@ if ! [ -x "$(command -v darknode)" ]; then
       echo 'export PATH=$PATH:$HOME/.darknode/bin' >> $HOME/.bashrc
     elif [ -f "$HOME/.profile" ] ; then
       echo 'export PATH=$PATH:$HOME/.darknode/bin' >> $HOME/.profile
+    else
+      echo 'export PATH=$PATH:$HOME/.darknode/bin' >> $HOME/.bash_profile
     fi
   elif [ -f "$HOME/.profile" ] ; then
+    echo 'export PATH=$PATH:$HOME/.darknode/bin' >> $HOME/.profile
+  else
     echo 'export PATH=$PATH:$HOME/.darknode/bin' >> $HOME/.profile
   fi
 
