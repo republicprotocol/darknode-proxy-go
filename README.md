@@ -6,4 +6,4 @@ To generate the files for the UI and CLI, run:
 
     $ bash generateFiles.sh
 
-> Note: you must have the `docker-machine` command-line tool installed. Visit https://docs.docker.com/machine/install-machine/ for more details.
+> Note: you must have the `docker-machine` command-line tool installed. Visit https://docs.docker.com/machine/install-machine/ for more details. This will likely require you to install `virtualbox` also.
