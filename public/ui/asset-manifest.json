@@ -1,11 +1,14 @@
 {
   "main.css": "static/css/main.96a435f4.css",
   "main.css.map": "static/css/main.96a435f4.css.map",
-  "main.js": "static/js/main.af08d955.js",
-  "main.js.map": "static/js/main.af08d955.js.map",
-  "static/media/btc.svg": "static/media/btc.d7876d48.svg",
-  "static/media/dgx.png": "static/media/dgx.cc08232d.png",
-  "static/media/eth.svg": "static/media/eth.80cc915b.svg",
+  "main.js": "static/js/main.f4d70b8f.js",
+  "main.js.map": "static/js/main.f4d70b8f.js.map",
+  "static/media/btc.svg": "static/media/btc.7fd6af60.svg",
+  "static/media/dgx.svg": "static/media/dgx.09966c0f.svg",
+  "static/media/eth.svg": "static/media/eth.2fa2aad0.svg",
   "static/media/logo.svg": "static/media/logo.d4f2788b.svg",
-  "static/media/ren.svg": "static/media/ren.a6553c2a.svg"
+  "static/media/omg.svg": "static/media/omg.e035dd24.svg",
+  "static/media/ren.svg": "static/media/ren.05a00b3b.svg",
+  "static/media/tusd.svg": "static/media/tusd.c377a1ca.svg",
+  "static/media/zrx.svg": "static/media/zrx.dc706f6a.svg"
 }
